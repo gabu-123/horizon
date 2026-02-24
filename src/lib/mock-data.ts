@@ -61,7 +61,7 @@ export const mockUserData: UserData = {
       id: 'acc_chk_1',
       type: 'Checking',
       accountNumber: '**** **** **** 1234',
-      balance: 5420.75,
+      balance: 115567.87,
       transactions: [
         {
           id: 'txn_1',
