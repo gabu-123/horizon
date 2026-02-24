@@ -10,6 +10,7 @@ import {
   ArrowRightLeft,
   TrendingUp,
   Landmark,
+  Banknote,
 } from 'lucide-react';
 
 import {
@@ -26,6 +27,7 @@ export function DashboardSidebar() {
 
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/dashboard/payments', icon: Banknote, label: 'Payments' },
     { href: '/dashboard/transfers', icon: ArrowRightLeft, label: 'Transfers' },
     { href: '/dashboard/cards', icon: CreditCard, label: 'Cards' },
     { href: '/dashboard/investments', icon: TrendingUp, label: 'Investments' },
@@ -33,7 +35,7 @@ export function DashboardSidebar() {
   ];
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-card sm:flex">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <TooltipProvider>
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
           <Link
