@@ -1,12 +1,9 @@
-import { Transaction } from '@/lib/mock-data';
+import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { P2PTransferForm } from './transfers/p2p-transfer-form';
+import { Button } from '../ui/button';
+import { Send } from 'lucide-react';
 
-export function P2PTransfer({
-  onTransferSuccess,
-}: {
-  onTransferSuccess?: (newTransaction: Transaction) => void;
-}) {
+export function P2PTransfer() {
   return (
     <Card>
         <CardHeader>
@@ -14,7 +11,11 @@ export function P2PTransfer({
             <CardDescription>Instantly transfer funds to anyone.</CardDescription>
         </CardHeader>
         <CardContent>
-            <P2PTransferForm onTransferSuccess={onTransferSuccess} />
+            <Link href="/dashboard/transfers" className="w-full">
+                <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                    <Send className="mr-2 h-4 w-4" /> New Transfer
+                </Button>
+            </Link>
         </CardContent>
     </Card>
   );
