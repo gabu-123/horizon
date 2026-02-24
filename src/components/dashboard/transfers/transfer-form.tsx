@@ -25,7 +25,7 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Calendar as CalendarIcon, Check, Loader2 } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { mockUserData, Transaction } from '@/lib/mock-data';
@@ -55,11 +55,7 @@ interface TransferFormProps {
     onTransferSuccess: (transaction: Transaction) => void;
 }
 
-const mockBanks = ['Bank of America', 'Wells Fargo', 'Citibank', 'Chase', 'U.S. Bank'];
-
 export function TransferForm({ onTransferSuccess }: TransferFormProps) {
-  const [recipientName, setRecipientName] = React.useState('');
-  const [isVerifying, setIsVerifying] = React.useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = React.useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
   const [transactionId, setTransactionId] = React.useState('');
@@ -81,23 +77,6 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
   });
   
   const selectedFromAccount = mockUserData.accounts.find(acc => acc.accountNumber === form.watch('fromAccount'));
-
-  React.useEffect(() => {
-    const accountNumber = form.watch('accountNumber');
-    if (accountNumber.match(/^\d{8,12}$/)) {
-      setIsVerifying(true);
-      const timeout = setTimeout(() => {
-        const mockName = 'Jane Smith';
-        setRecipientName(mockName);
-        form.setValue('recipientName', mockName);
-        setIsVerifying(false);
-      }, 1000);
-      return () => clearTimeout(timeout);
-    } else {
-      setRecipientName('');
-      form.setValue('recipientName', '');
-    }
-  }, [form, form.watch('accountNumber')]);
   
   function onSubmit(data: BankTransferFormValues) {
     if ((selectedFromAccount?.balance || 0) < data.amount) {
@@ -182,25 +161,29 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
 
             <div className="space-y-4">
                 <h3 className="text-lg font-medium">Recipient Details</h3>
+                <FormField
+                  control={form.control}
+                  name="recipientName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Recipient Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter recipient's full name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <FormField
+                    <FormField
                       control={form.control}
                       name="bankName"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Recipient&apos;s Bank</FormLabel>
-                           <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select a bank" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {mockBanks.map(bank => (
-                                    <SelectItem key={bank} value={bank}>{bank}</SelectItem>
-                                  ))}
-                                </SelectContent>
-                            </Select>
+                            <FormControl>
+                                <Input placeholder="Enter bank name" {...field} />
+                            </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -212,30 +195,18 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
                         <FormItem>
                           <FormLabel>Account Number</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter 8-12 digit account number" {...field} />
+                            <Input
+                                placeholder="Enter 8-12 digit account number"
+                                {...field}
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                 </div>
-                 <FormField
-                  control={form.control}
-                  name="recipientName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Recipient Name</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                            <Input placeholder="Recipient name will appear here" {...field} disabled />
-                            {isVerifying && <Loader2 className="absolute right-3 top-2.5 h-5 w-5 animate-spin text-muted-foreground" />}
-                            {recipientName && !isVerifying && <Check className="absolute right-3 top-2.5 h-5 w-5 text-green-500" />}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <FormField
                   control={form.control}
                   name="saveRecipient"
