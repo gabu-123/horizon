@@ -30,7 +30,6 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { mockUserData, Transaction } from '@/lib/mock-data';
 import { TransferSummary } from './transfer-summary';
-import { TransferConfirmationDialog } from './transfer-confirmation-dialog';
 import { TransferSuccessDialog } from './transfer-success-dialog';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
@@ -62,7 +61,6 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
   const [recipientName, setRecipientName] = React.useState('');
   const [isVerifying, setIsVerifying] = React.useState(false);
   const [isSummaryOpen, setIsSummaryOpen] = React.useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
   const [transactionId, setTransactionId] = React.useState('');
   
@@ -109,11 +107,10 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
 
   const handleConfirmTransfer = () => {
     setIsSummaryOpen(false);
-    setIsConfirmOpen(true);
+    handleSuccess();
   };
   
   const handleSuccess = () => {
-    setIsConfirmOpen(false);
     const newTransactionId = `txn_${Date.now()}`;
     setTransactionId(newTransactionId);
     
@@ -375,12 +372,6 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
         onConfirm={handleConfirmTransfer}
         data={form.getValues()}
         fromAccount={selectedFromAccount}
-      />
-      
-      <TransferConfirmationDialog 
-         isOpen={isConfirmOpen} 
-         onOpenChange={setIsConfirmOpen}
-         onSuccess={handleSuccess}
       />
       
       <TransferSuccessDialog 
