@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
 type TransferData = {
     recipientName: string;
@@ -41,20 +42,26 @@ export function TransferSuccessDialog({ isOpen, onOpenChange, transactionId, dat
           </div>
           <DialogTitle className="text-center text-2xl">Transfer Successful</DialogTitle>
           <DialogDescription className="text-center">
-            You have successfully sent{' '}
-            <span className="font-bold text-foreground">
-              {data.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-            </span>{' '}
-            to <span className="font-bold text-foreground">{data.recipientName}</span>.
+            Your transfer to{' '}
+            <span className="font-bold text-foreground">{data.recipientName}</span> has been completed.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-            <p className="text-center text-sm text-muted-foreground">Transaction Reference ID</p>
-            <div className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-muted p-3 font-mono text-sm">
-                <span>{transactionId}</span>
-                <Button variant="ghost" size="icon" onClick={handleCopy} className="h-7 w-7">
-                    <Copy className="h-4 w-4" />
-                </Button>
+        <div className="space-y-4 py-4">
+            <div className="text-center">
+                 <p className="text-sm text-muted-foreground">Amount Transferred</p>
+                 <p className="text-3xl font-bold text-foreground">
+                    {data.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                </p>
+            </div>
+            <Separator />
+            <div>
+                <p className="text-center text-sm text-muted-foreground">Transaction Reference ID</p>
+                <div className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-muted p-3 font-mono text-sm">
+                    <span>{transactionId}</span>
+                    <Button variant="ghost" size="icon" onClick={handleCopy} className="h-7 w-7">
+                        <Copy className="h-4 w-4" />
+                    </Button>
+                </div>
             </div>
         </div>
         <DialogFooter>
