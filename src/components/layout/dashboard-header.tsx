@@ -37,7 +37,6 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { mockUserData } from '@/lib/mock-data';
-import { ChatAssistant } from '../ai/chat-assistant';
 import { cn } from '@/lib/utils';
 
 export function DashboardHeader() {
@@ -104,6 +103,16 @@ export function DashboardHeader() {
               Investments
             </Link>
             <Link
+              href="/dashboard/ai-assistant"
+              className={cn(
+                "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
+                pathname.startsWith('/dashboard/ai-assistant') && 'text-foreground'
+              )}
+            >
+                <Bot className="h-5 w-5" />
+                AI Assistant
+            </Link>
+            <Link
               href="/dashboard/settings"
               className={cn(
                 "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
@@ -113,12 +122,6 @@ export function DashboardHeader() {
                 <Settings className="h-5 w-5" />
                 Settings
             </Link>
-            <ChatAssistant>
-                <div className="flex cursor-pointer items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                    <Bot className="h-5 w-5" />
-                    AI Assistant
-                </div>
-            </ChatAssistant>
           </nav>
         </SheetContent>
       </Sheet>
@@ -132,10 +135,10 @@ export function DashboardHeader() {
               <React.Fragment key={href}>
                 <BreadcrumbItem>
                   {isLast ? (
-                    <BreadcrumbPage>{name}</BreadcrumbPage>
+                    <BreadcrumbPage>{name.replace('Ai', 'AI')}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
-                      <Link href={href}>{name}</Link>
+                      <Link href={href}>{name.replace('Ai', 'AI')}</Link>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>

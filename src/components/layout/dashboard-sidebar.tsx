@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/tooltip';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { ChatAssistant } from '../ai/chat-assistant';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
@@ -30,6 +29,7 @@ export function DashboardSidebar() {
     { href: '/dashboard/transfers', icon: ArrowRightLeft, label: 'Transfers' },
     { href: '/dashboard/cards', icon: CreditCard, label: 'Cards' },
     { href: '/dashboard/investments', icon: TrendingUp, label: 'Investments' },
+    { href: '/dashboard/ai-assistant', icon: Bot, label: 'AI Assistant' },
   ];
 
   return (
@@ -61,23 +61,6 @@ export function DashboardSidebar() {
               <TooltipContent side="right">{item.label}</TooltipContent>
             </Tooltip>
           ))}
-          
-          <ChatAssistant>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  className={cn(
-                    'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 cursor-pointer'
-                  )}
-                >
-                  <Bot className="h-5 w-5" />
-                  <span className="sr-only">AI Assistant</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="right">AI Assistant</TooltipContent>
-            </Tooltip>
-          </ChatAssistant>
-
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
           <Tooltip>
