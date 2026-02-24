@@ -63,6 +63,8 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
   const [isSummaryOpen, setIsSummaryOpen] = React.useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
   const [transactionId, setTransactionId] = React.useState('');
+  const [completedTransferData, setCompletedTransferData] = React.useState<BankTransferFormValues | null>(null);
+
   
   const form = useForm<BankTransferFormValues>({
     resolver: zodResolver(bankTransferSchema),
@@ -115,6 +117,7 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
     setTransactionId(newTransactionId);
     
     const data = form.getValues();
+    setCompletedTransferData(data);
     const newTransaction: Transaction = {
         id: newTransactionId,
         date: new Date().toISOString(),
@@ -129,6 +132,13 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
     setIsSuccessOpen(true);
     form.reset();
   };
+
+  const handleSuccessDialogClose = (open: boolean) => {
+    setIsSuccessOpen(open);
+    if (!open) {
+      setCompletedTransferData(null);
+    }
+  }
 
   return (
     <>
@@ -374,12 +384,14 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
         fromAccount={selectedFromAccount}
       />
       
-      <TransferSuccessDialog 
-        isOpen={isSuccessOpen}
-        onOpenChange={setIsSuccessOpen}
-        transactionId={transactionId}
-        data={form.getValues()}
-      />
+      {completedTransferData && (
+        <TransferSuccessDialog 
+          isOpen={isSuccessOpen}
+          onOpenChange={handleSuccessDialogClose}
+          transactionId={transactionId}
+          data={completedTransferData}
+        />
+      )}
     </>
   );
 }
