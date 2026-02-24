@@ -14,13 +14,49 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/logo';
+import React, { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
   const router = useRouter();
+  const [isOtpOpen, setIsOtpOpen] = useState(false);
+  const [otp, setOtp] = useState('');
+  const { toast } = useToast();
+  const correctOtp = '930521';
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/dashboard');
+    // In a real app, you'd validate credentials before showing OTP
+    setIsOtpOpen(true);
+  };
+
+  const handleOtpVerify = () => {
+    if (otp === correctOtp) {
+      toast({
+        title: 'Sign In Successful',
+        description: 'Welcome back!',
+      });
+      router.push('/dashboard');
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid OTP',
+        description: 'The code you entered is incorrect. Please try again.',
+      });
+      setOtp('');
+    }
   };
 
   return (
@@ -80,6 +116,46 @@ export default function LoginPage() {
           </form>
         </Card>
       </div>
+
+      <Dialog open={isOtpOpen} onOpenChange={setIsOtpOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Enter Verification Code</DialogTitle>
+            <DialogDescription>
+              For your security, please enter the 6-digit code.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={6}
+                value={otp}
+                onChange={(value) => setOtp(value)}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Your one-time password is <span className="font-mono font-bold text-foreground">{correctOtp}</span>
+            </p>
+            <Button
+              type="button"
+              onClick={handleOtpVerify}
+              disabled={otp.length < 6}
+              className="w-full"
+            >
+              Verify & Sign In
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
