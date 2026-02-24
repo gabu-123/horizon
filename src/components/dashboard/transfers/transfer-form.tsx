@@ -28,7 +28,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { mockUserData, Transaction } from '@/lib/mock-data';
+import type { Transaction, Account } from '@/lib/mock-data';
 import { TransferSummary } from './transfer-summary';
 import { TransferSuccessDialog } from './transfer-success-dialog';
 import { Switch } from '@/components/ui/switch';
@@ -52,10 +52,11 @@ const bankTransferSchema = z.object({
 type BankTransferFormValues = z.infer<typeof bankTransferSchema>;
 
 interface TransferFormProps {
-    onTransferSuccess: (transaction: Transaction) => void;
+    onTransferSuccess: (transaction: Transaction, fromAccountNumber: string) => void;
+    accounts: Account[];
 }
 
-export function TransferForm({ onTransferSuccess }: TransferFormProps) {
+export function TransferForm({ onTransferSuccess, accounts }: TransferFormProps) {
   const [isSummaryOpen, setIsSummaryOpen] = React.useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = React.useState(false);
   const [transactionId, setTransactionId] = React.useState('');
@@ -76,7 +77,7 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
     },
   });
   
-  const selectedFromAccount = mockUserData.accounts.find(acc => acc.accountNumber === form.watch('fromAccount'));
+  const selectedFromAccount = accounts.find(acc => acc.accountNumber === form.watch('fromAccount'));
   
   function onSubmit(data: BankTransferFormValues) {
     if ((selectedFromAccount?.balance || 0) < data.amount) {
@@ -106,7 +107,7 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
         category: 'Transfers',
         status: 'Completed',
     };
-    onTransferSuccess(newTransaction);
+    onTransferSuccess(newTransaction, data.fromAccount);
     
     setIsSuccessOpen(true);
     form.reset();
@@ -138,7 +139,7 @@ export function TransferForm({ onTransferSuccess }: TransferFormProps) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {mockUserData.accounts.map(account => (
+                          {accounts.map(account => (
                             <SelectItem key={account.id} value={account.accountNumber}>
                               <div className="flex justify-between w-full">
                                 <span>{account.type} (...{account.accountNumber.slice(-4)})</span>

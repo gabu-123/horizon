@@ -6,13 +6,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { mockUserData } from '@/lib/mock-data';
+import type { Account } from '@/lib/mock-data';
 import { DollarSign, Wallet } from 'lucide-react';
 
-export function AccountSummary() {
-  const checkingAccount = mockUserData.accounts.find(
+export function AccountSummary({ accounts }: { accounts: Account[] }) {
+  const checkingAccount = accounts.find(
     (acc) => acc.type === 'Checking'
   );
-  const savingsAccount = mockUserData.accounts.find(
+  const savingsAccount = accounts.find(
     (acc) => acc.type === 'Savings'
   );
 

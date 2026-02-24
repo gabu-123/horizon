@@ -5,18 +5,32 @@ import { Lock } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { TransferForm } from '@/components/dashboard/transfers/transfer-form';
 import { TransactionHistory } from '@/components/dashboard/transaction-history';
-import { mockUserData, Transaction } from '@/lib/mock-data';
+import { mockUserData } from '@/lib/mock-data';
+import type { Transaction, Account } from '@/lib/mock-data';
 
 export default function TransfersPage() {
+  const [accounts, setAccounts] = useState<Account[]>(mockUserData.accounts);
+  
   const [transactions, setTransactions] = useState<Transaction[]>(
     (
-      mockUserData.accounts.find((acc) => acc.type === 'Checking')
+      accounts.find((acc) => acc.type === 'Checking')
         ?.transactions || []
     ).filter((t) => t.category === 'Transfers')
   );
 
-  const handleNewTransfer = (newTransaction: Transaction) => {
+  const handleNewTransfer = (newTransaction: Transaction, fromAccountNumber: string) => {
     setTransactions((prevTransactions) => [newTransaction, ...prevTransactions]);
+    setAccounts(prevAccounts => 
+        prevAccounts.map(account => {
+            if(account.accountNumber === fromAccountNumber) {
+                return {
+                    ...account,
+                    balance: account.balance + newTransaction.amount // amount is negative
+                }
+            }
+            return account;
+        })
+    )
   };
 
   return (
@@ -41,7 +55,7 @@ export default function TransfersPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <TransferForm onTransferSuccess={handleNewTransfer} />
+          <TransferForm onTransferSuccess={handleNewTransfer} accounts={accounts} />
         </CardContent>
       </Card>
        <div className='pt-4'>
