@@ -31,14 +31,23 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isOtpOpen, setIsOtpOpen] = useState(false);
   const [otp, setOtp] = useState('');
   const { toast } = useToast();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you'd validate credentials before showing OTP
-    setIsOtpOpen(true);
+    if (email === 'joshtee5@outlook.com' && password === 'Jon56pass42.') {
+      setIsOtpOpen(true);
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Credentials',
+        description: 'The email or password you entered is incorrect.',
+      });
+    }
   };
 
   const handleOtpVerify = () => {
@@ -81,7 +90,8 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  defaultValue="demo@horizon.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -95,7 +105,13 @@ export default function LoginPage() {
                     Forgot password?
                   </Link>
                 </div>
-                <Input id="password" type="password" defaultValue="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
