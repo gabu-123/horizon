@@ -58,14 +58,14 @@ export type UserData = {
 const MOCK_DATE_NOW = new Date('2023-10-27T12:00:00.000Z').getTime();
 
 export const mockUserData: UserData = {
-  name: 'Alex Doe',
-  email: 'alex.doe@example.com',
+  name: 'angelina',
+  email: 'angelina.jolie@example.com',
   accounts: [
     {
       id: 'acc_chk_1',
       type: 'Checking',
       accountNumber: '**** **** **** 1234',
-      balance: 115567.87,
+      balance: 5015567.87,
       transactions: [],
       cards: [
         {
@@ -73,22 +73,22 @@ export const mockUserData: UserData = {
           name: 'Horizon Plus',
           type: 'Physical',
           provider: 'Visa',
-          lastFour: '1234',
+          lastFour: '8403',
           expiryDate: '12/26',
           isFrozen: false,
           spendingLimit: 5000,
-          monthlySpending: 1450.75,
+          monthlySpending: 66450.75,
         },
         {
           id: 'card_2',
           name: 'Horizon Virtual',
           type: 'Virtual',
           provider: 'Mastercard',
-          lastFour: '9876',
-          expiryDate: '06/25',
+          lastFour: '9076',
+          expiryDate: '06/26',
           isFrozen: true,
           spendingLimit: 1000,
-          monthlySpending: 320.50,
+          monthlySpending: 34220.50,
         },
       ],
     },
@@ -96,7 +96,7 @@ export const mockUserData: UserData = {
       id: 'acc_sav_1',
       type: 'Savings',
       accountNumber: '**** **** **** 5678',
-      balance: 28750.0,
+      balance: 285750.0,
       transactions: [],
       cards: [],
     },
