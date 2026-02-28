@@ -32,7 +32,17 @@ const mockAccountBalances = {
   savings: 8765.20,
 };
 
-const mockTransactionHistory = {
+type MockTransaction = {
+  date: string;
+  description: string;
+  amount: number;
+  type: 'credit' | 'debit';
+};
+
+const mockTransactionHistory: {
+  checking: MockTransaction[];
+  savings: MockTransaction[];
+} = {
   checking: [
     {date: '2023-10-26', description: 'Grocery Store', amount: -75.30, type: 'debit'},
     {date: '2023-10-25', description: 'Paycheck', amount: 1500.00, type: 'credit'},
@@ -96,7 +106,7 @@ const getTransactionHistoryTool = ai.defineTool(
       })
     ),
   },
-  async input => {
+  async (input) => {
     // In a real application, this would call a banking service API.
     await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
     const history = mockTransactionHistory[input.accountType];
