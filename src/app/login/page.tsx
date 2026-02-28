@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === 'joshtee5@outlook.com' && password === 'Jon56pass42.') {
+    if (email === 'angelinajolie50@outlook.com' && password === 'Jolie50pass50.') {
       setIsOtpOpen(true);
     } else {
       toast({

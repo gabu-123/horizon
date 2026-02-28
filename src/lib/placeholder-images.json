@@ -3,7 +3,7 @@
     {
       "id": "user-avatar",
       "description": "User avatar placeholder",
-      "imageUrl": "src/lib/jolie.jfif",
+      "imageUrl": "src/lib/jolie.jpg",
       "imageHint": "person portrait"
     },
     {
